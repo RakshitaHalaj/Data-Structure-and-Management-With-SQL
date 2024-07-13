@@ -1,0 +1,75 @@
+**Task 1** : Filter data using the WHERE clause and logical operators.
+# Create SQL statement to print all records from Bookings table for the following bookings dates using the BETWEEN operator: 2021-11-11, 2021-11-12 and 2021-11-.
+
+    select * from Bookings where BookingDate between '2021-11-11' and  '2021-11-13';
+
+**Task 2** : Create a JOIN query.
+#Create a JOIN SQL statement on the Customers and Bookings tables. The statement must print the customers full names and related bookings IDs from the date 2021-11-11.
+  
+  select c.FullName,b.BookingId 
+  from Customers c inner join Bookings b on c.CustomerID=b.CustomerID
+  where b.BookingDate='2021-11-11';
+
+
+**Task 3** : Create a GROUP BY query.
+ #Create a SQl statement to print the bookings dates from Bookings table. The statement must show the total number of bookings placed on each of the printed dates using the GROUP BY BookingDate.
+
+   select BookingDate ,count(NumberOfGuests) as TotalBooks from Bookings group by 1;
+
+**Task 4** : Create a REPLACE statement.
+#Create a SQL REPLACE statement that updates the cost of the Kabsa course from $17.00 to $20.00. 
+
+  replace into Courses values('Kabasa','20.00');
+   select * from Courses;
+
+**Task 5** : Create constraints 
+    #Create a new table called "DeliveryAddress" in the Little Lemon database with the following columns and constraints: 
+    #ID: INT PRIMARY KEY
+    #Address: VARCHAR(255) NOT NULL
+    #Type: NOT NULL DEFAULT "Private" 
+    #CustomerID: INT NOT NULL FOREIGN KEY referencing CustomerID in the Customers table 
+
+create table DeliveryAddress(ID int primary key,Address varchar(255) not null,type varchar(50) not null default "private",customerID int not null, foreign key(customerID) references Customers(customerID));
+ show columns from  DeliveryAddress;
+
+
+**Task 6** : Alter table structure 
+    #Create a SQL statement that adds a new column called 'Ingredients' to the Courses table. 
+    #Ingredients: VARCHAR(255) 
+    #Once the column has been added, the table's new structure should be the same as Before one:
+
+   alter table Courses add column Ingredients varchar(255);
+  show columns from  Courses;
+
+**Task 7** : Alter table structure 
+#Create a SQL statement with a subquery that prints the full names of all customers who made bookings in the restaurant on the following date: 2021-11-11. 
+
+select c.FullName 
+from Customers c, Bookings b 
+where c.CustomerID=b.CustomerID and b.BookingDate= all(select b1.BookingDate from Bookings b1  where b1.BookingDate='2021-11-11');
+
+
+**Task 8** : Create a virtual table 
+# Create the "BookingsView" virtual table to print all bookings IDs, bookings dates and the number of guests for bookings made in the restaurant before 2021-11-13 and where number of guests is larger than 3.
+
+create view BookingsView2 as select BookingID,BookingDate,NumberOfGuests
+from Bookings
+where BookingDate<'2021-11-13' and NumberOfGuests>3;
+
+*Task 9** : Create a stored procedure 
+#Create a stored procedure called 'GetBookingsData'. The procedure must contain one date parameter called "InputDate". This parameter retrieves all data from the Bookings table based on the user input of the date.
+
+create procedure GetBookingdata( InputDate DATE)
+  select * from Bookings
+  where BookingDate=InputDate;
+
+ call  GetBookingdata('2021-11-13');
+
+**Task 10** : Use the String function
+  #Create a SQL SELECT query using appropriate MySQL string function to list "Booking Details" including booking ID, booking date and number of guests. The data must be listed in the same format as the following example:
+   #ID: 10, Date: 2021-11-10, Number of guests: 5
+
+select concat("ID: ",BookingID,", ", "DATE: ",BookingDate,", ","Number of Guests: ",NumberOfGuests) BookingDetails from Bookings;
+
+
+
